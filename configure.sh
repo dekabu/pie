@@ -1,0 +1,77 @@
+#!/bin/sh
+
+addpath() {
+	if [ $(echo $1 | grep /$) ]; then
+		echo $1$2
+	else
+		echo $1/$2
+	fi
+}
+
+for x in $@; do
+	if [ $(echo $x | grep =) ]; then
+		case $(echo $x | cut -d = -f 1) in
+			--prefix)
+				prefix=$(echo $x | cut -d = -f 2)
+				;;
+			--bindir)
+				bindir=$(echo $x | cut -d = -f 2)
+		esac
+	else
+		case $x in
+			-v | --version)
+				echo 0.0.1
+				exit
+		esac
+	fi
+done
+
+echo -n 'system = '
+if [ $TERMUX_VERSION ]; then
+	system=Termux
+elif [ $(uname | grep Linux) ]; then
+	system=Linux
+elif [ $(uname | grep MSYS) ]; then
+	system=MSYS
+fi
+echo $system
+
+echo -n 'prefix = '
+if [ ! $prefix ]; then
+	if [ $system = Termux ]; then
+		prefix=$PREFIX
+	else
+		prefix=/usr/local
+	fi
+fi
+echo $prefix
+
+echo -n 'bindir = '
+if [ ! $bindir ]; then
+	bindir=$(addpath $prefix bin)
+fi
+echo $bindir
+
+echo 'Makefile generation...'
+echo "OBJS = src/main/main.o
+
+pie: \$(OBJS)
+	\$(CC) \$(OBJS) -o pie
+
+run: pie
+	./pie
+
+install: pie
+	mkdir -p $bindir
+	install pie $bindir
+
+clean:
+	rm \$(OBJS)
+
+remove:
+	rm pie
+
+uninstall:
+	rm $(addpath $bindir pie)" > Makefile
+
+echo Successfully!
