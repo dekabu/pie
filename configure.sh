@@ -53,10 +53,12 @@ fi
 echo $bindir
 
 echo 'Makefile generation...'
-echo "OBJS = src/main/main.o
+echo "OBJ = src/base/base.o \\
+       src/lex/lex.o \\
+			 src/main/main.o
 
-pie: \$(OBJS)
-	\$(CC) \$(OBJS) -o pie
+pie: \$(OBJ)
+	\$(CC) \$(OBJ) -o pie
 
 run: pie
 	./pie
@@ -66,7 +68,7 @@ install: pie
 	install pie $bindir
 
 clean:
-	rm \$(OBJS)
+	rm \$(OBJ)
 
 remove:
 	rm pie

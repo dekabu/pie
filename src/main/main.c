@@ -1,4 +1,9 @@
+#include "../pie.h"
+
+#include <stdio.h>
+
 int main()
 {
-  return 17;
+  printf("%s", PIE_VERSION);
+  return 0;
 }
