@@ -4,6 +4,7 @@
 
 int main()
 {
-  printf("%s", PIE_VERSION);
+  pie_TokenList l = pie_parse(". .. ... .= ,");
+  printf("%lu", l.len);
   return 0;
 }
