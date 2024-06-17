@@ -29,7 +29,7 @@ enum pie_tokens {
 	pie_token_double_minus,         /* --   */
 	pie_token_minus_equal,          /* -=   */
 
-	pie_token_miltiplication,       /* *    */
+	pie_token_multiplication,       /* *    */
 	pie_token_multiplication_equal, /* *=   */
 
 	pie_token_division,             /* /    */
