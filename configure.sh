@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#test
+
 addpath() {
 	if [ $(echo $1 | grep /$) ]; then
 		echo $1$2
