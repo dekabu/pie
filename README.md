@@ -20,7 +20,7 @@ High-level interpreted programming language for mathematical calculations
    make test
    ```
 6. install
-   ```sh
+	```sh
    make install
    ```
 ## Uninstall
