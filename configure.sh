@@ -73,6 +73,9 @@ clean:
 remove:
 	rm pie
 
+allclean: clean remove
+	rm Makefile
+
 uninstall:
 	rm $(addpath $bindir pie)" > Makefile
 
