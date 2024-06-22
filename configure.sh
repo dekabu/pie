@@ -52,6 +52,14 @@ if [ ! $bindir ]; then
 fi
 echo $bindir
 
+echo 'config.h generation...'
+echo -n '#define PIE_OS_' > src/config.h
+if [ $system = MSYS ]; then
+	echo 'WINDOWS' >> src/config.h
+else
+	echo 'LINUX' >> src/config.h
+fi
+
 echo 'Makefile generation...'
 echo "OBJ = src/base/base.o \\
        src/lex/lex.o \\
@@ -74,6 +82,7 @@ remove:
 	rm pie
 
 allclean: clean remove
+	rm src/config.h
 	rm Makefile
 
 uninstall:
