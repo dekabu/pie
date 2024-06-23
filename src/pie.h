@@ -9,6 +9,9 @@
 
 #define PIE_VERSION xstr(PIE_VERSION_MAJOR) "." xstr(PIE_VERSION_MINOR) "." xstr(PIE_VERSION_PATCH)
 
+#include "life/life.h"
+
 #include "lex/lex.h"
+
 
 #endif
