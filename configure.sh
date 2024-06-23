@@ -66,6 +66,7 @@ echo "#define PROMPT2     \"Out[%n] >> \"" >> src/config.h
 
 echo 'Makefile generation...'
 echo "OBJ = src/base/base.o \\
+       src/life/life.o \\
        src/lex/lex.o \\
 			 src/main/main.o
 
