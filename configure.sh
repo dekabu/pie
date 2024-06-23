@@ -53,12 +53,16 @@ fi
 echo $bindir
 
 echo 'config.h generation...'
-echo -n '#define PIE_OS_' > src/config.h
+echo -n '#define ' > src/config.h
 if [ $system = MSYS ]; then
 	echo 'WINDOWS' >> src/config.h
 else
 	echo 'LINUX' >> src/config.h
 fi
+echo "
+#define COLOR_INPUT 1" >> src/config.h
+echo "#define PROMPT1     \"In [%n] >> \"" >> src/config.h
+echo "#define PROMPT2     \"Out[%n] >> \"" >> src/config.h
 
 echo 'Makefile generation...'
 echo "OBJ = src/base/base.o \\
