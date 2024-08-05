@@ -54,6 +54,22 @@ fi
 echo "Bindir = $bindir"
 echo
 
+echo -n 'Generation config.h... '
+echo -n '#define ' > src/config.h
+if [ $system = MSYS ]; then
+	echo windows >> src/config.h
+else
+	echo unix >> src/config.h
+fi
+echo '#define PIE_COLOR 1' >> src/config.h
+echo -n '#define PIE_ANSI  ' >> src/config.h
+if [ $system = MSYS ]; then
+	echo 0 >> src/config.h
+else
+	echo 1 >> src/config.h
+fi
+echo done.
+
 echo -n 'Generation Makefile... '
 echo "OBJ = src/obj/obj.o \\
       src/init/init.o \\
