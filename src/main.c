@@ -4,8 +4,8 @@
 
 pie_OBJ pie_CurrentObj;
 
-const pie_OBJ pie_True  = {pie_bool_t, {0}};
-const pie_OBJ pie_False = {pie_bool_t, {1}};
+const pie_OBJ pie_True  = {pie_bool_t, {1}};
+const pie_OBJ pie_False = {pie_bool_t, {0}};
 const pie_OBJ pie_Null  = {pie_null_t};
 
 pie_NAMESPACE pie_GlobalNamespace, pie_CurrentNamespace;
