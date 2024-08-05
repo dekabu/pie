@@ -55,6 +55,10 @@ int main(int argc, char* argv[])
 			pie_Settings.color = 1;
 		else if (!strcmp(str, "--ansi"))
 			pie_Settings.ansi = 1;
+		else if (!strcmp(str, "--version")) {
+			printf("0.1.0b\n");
+			return 0;
+		}
 		else {
 			fprintf(stderr, "Error: unknown option '%s'\nTry 'pie --help' for more info.\n", str);
 			return 1;
