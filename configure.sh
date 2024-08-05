@@ -11,7 +11,7 @@ addpath() {
 for x; do
 	case $x in
 		-v | --version)
-			echo 0.1.0beta
+			echo 0.1.0b
 			exit;;
 		-h | --help)
 			echo Бог спасёт.
@@ -27,8 +27,16 @@ for x; do
 			--prefix)
 				prefix=$p2;;
 			--bindir)
-				bindir=$p2
+				bindir=$p2;;
+			*)
+				echo "Error: unknown option '$p1'"
+				echo "Try '$0 --help' for more info."
+				exit 1
 		esac
+	else
+		echo "Error: unknown option '$x'"
+		echo "Try '$0 --help' for more info."
+		exit 1
 	fi 
 done
 
