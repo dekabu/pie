@@ -1,0 +1,154 @@
+#!/bin/sh
+
+pathcat() {
+	ADD=
+	[ `echo $1 | grep /$` ] || ADD=/
+	echo $1$ADD$2
+}
+
+error() {
+	echo "Error: $1"
+	exit $2
+}
+
+for var in NAME PREFIX BINDIR; do
+	let ${var}_F=0
+done
+
+for arg; do
+	SKIP=
+	for var in NAME PREFIX BINDIR; do
+		flag=${var}_F
+		let value=$flag
+		if [ $value -gt 1 ]; then
+			let $flag--
+		elif [ $value = 1 ]; then
+			export $var=$arg
+			let $flag=0
+			SKIP=1
+		fi
+	done
+	if [ ! $SKIP ]; then
+		if [ `expr substr $arg 1 2` = '--' ]; then
+			len=$((`expr length $arg` - 2))
+			arg=`expr substr $arg 3 $len`
+			if [ `echo $arg | grep =` ]; then
+				option=`echo $arg | cut -d = -f 1`
+				value=`echo $arg | cut -d = -f 2`
+				case $option in
+					name)
+						NAME=$value;;
+					prefix)
+						PREFIX=$value;;
+					bindir)
+						BINDIR=$value;;
+					*)
+						error "invalid option '--$option'" 1
+				esac
+			else
+				case $arg in
+					version)
+						v1=`cat src/pie.h | head -4 | tail -1 | cut -d ' ' -f 3`
+						v2=`cat src/pie.h | head -5 | tail -1 | cut -d ' ' -f 3`
+						v3=`cat src/pie.h | head -6 | tail -1 | cut -d ' ' -f 3`
+						echo $v1.$v2.$v3
+						exit;;
+					*)
+						error "invalid option '--$arg'" 1 
+				esac
+			fi
+		elif [ `expr substr $arg 1 1` = '-' ]; then
+			order=1
+			len=$((`expr length $arg` - 1))
+			arg=`expr substr $arg 2 $len`
+			for char in `echo $arg | fold -1`; do
+				case $char in
+					n)
+						NAME_F=$order;;
+					p)
+						PREFIX_F=$order;;
+					b)
+						BINDIR_F=$ordef;;
+					*)
+						error "invalid option '-$char'" 1
+				esac
+				let order++
+			done
+		fi
+	fi
+done
+
+[ $NAME_F -gt 0 ] && error 'missing name' 2
+[ $PREFIX_F -gt 0 ] && error 'missing prefix' 2
+[ $BINDIR_F -gt 0 ] && error 'missing bindir' 2
+
+[ $NAME ] || NAME=pie
+echo "Name   = $NAME"
+
+if [ $TERMUX_VERSION ]; then
+	SYSTEM=Termux
+elif [ `uname` = Linux ]; then
+	SYSTEM=Linux
+fi
+echo "System = $SYSTEM"
+
+if [ ! $PREFIX ]; then
+	if [ $SYSTEM = Termux ]; then
+		PREFIX=/data/data/com.termux/files/usr
+	else
+		PREFIX=/usr/local
+	fi
+fi
+
+[ $BINDIR ] || BINDIR=`pathcat $PREFIX bin`
+echo "Bindir = $BINDIR"
+
+echo
+echo Generation Makefile...
+
+echo "OBJ = src/base/base.o src/pie.o 
+
+$NAME: \$(OBJ)
+	@ \$(CC) \$(LDFLAGS) \$(OBJ) -o $NAME
+	@ echo LD $NAME
+
+src/base/base.o: src/base/base.h
+
+%.o: %.c
+	@ echo CC \$@
+	@ \$(CC) \$(CFLAGS) -c \$< -o \$@
+	
+src/pie.o: src/main.c src/pie.h
+	@ echo CC src/pie.o
+	@ \$(CC) \$(CFLAGS) -c src/main.c -o src/pie.o
+
+run: $NAME
+	@ echo Launch $NAME...
+	@ ./$NAME
+	@ echo Finished with code $?
+
+install: $NAME
+	install $NAME $BINDIR
+
+uninstall:
+	rm `pathcat $BINDIR $NAME`
+
+clean:
+	@ for file in \$(OBJ); do \\
+	  	if [ -f \$\$file ]; then \\
+				echo rm \$\$file; \\
+				rm \$\$file; \\
+			fi \\
+		done
+
+destroy: clean
+	@ if [ -f $NAME ]; then \\
+	  	echo rm $NAME; \\
+			rm $NAME; \\
+		fi
+	rm Makefile
+
+love:
+	@ echo No war!" > Makefile
+
+echo "Complete! Now run 'make' to build."
