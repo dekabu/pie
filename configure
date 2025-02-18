@@ -48,9 +48,9 @@ for arg; do
 			else
 				case $arg in
 					version)
-						v1=`cat src/pie.h | head -4 | tail -1 | cut -d ' ' -f 3`
-						v2=`cat src/pie.h | head -5 | tail -1 | cut -d ' ' -f 3`
-						v3=`cat src/pie.h | head -6 | tail -1 | cut -d ' ' -f 3`
+						v1=`cat src/pie.h | head -7 | tail -1 | cut -d ' ' -f 3`
+						v2=`cat src/pie.h | head -8 | tail -1 | cut -d ' ' -f 3`
+						v3=`cat src/pie.h | head -9 | tail -1 | cut -d ' ' -f 3`
 						echo $v1.$v2.$v3
 						exit;;
 					*)
@@ -106,7 +106,9 @@ echo "Bindir = $BINDIR"
 echo
 echo Generation Makefile...
 
-echo "OBJ = src/base/base.o src/pie.o 
+echo "OBJ = src/base/base.o \\
+      src/init/init.o \\
+      src/pie.o
 
 $NAME: \$(OBJ)
 	@ \$(CC) \$(LDFLAGS) \$(OBJ) -o $NAME
