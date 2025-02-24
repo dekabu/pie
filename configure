@@ -15,6 +15,7 @@ for var in NAME PREFIX BINDIR; do
 	let ${var}_F=0
 done
 
+unset NAME PREFIX BINDIR CC
 for arg; do
 	SKIP=
 	for var in NAME PREFIX BINDIR; do
@@ -74,6 +75,11 @@ for arg; do
 				esac
 				let order++
 			done
+		else
+			if [ `echo "$arg" | grep =` ]; then
+				option=`echo "$arg" | cut -d = -f 1`
+				echo $option
+			fi
 		fi
 	fi
 done
@@ -115,6 +121,8 @@ $NAME: \$(OBJ)
 	@ echo LD $NAME
 
 src/base/base.o: src/base/base.h
+
+src/init/init.o: src/init/init.h
 
 %.o: %.c
 	@ echo CC \$@
