@@ -134,8 +134,7 @@ src/pie.o: src/main.c src/pie.h
 
 run: $NAME
 	@ echo Launch $NAME...
-	@ ./$NAME
-	@ echo Finished with code $?
+	@ ./$NAME; echo Finished with code \$\$?
 
 install: $NAME
 	install $NAME $BINDIR
