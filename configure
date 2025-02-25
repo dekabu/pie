@@ -113,7 +113,7 @@ echo
 echo Generation Makefile...
 
 echo "OBJ = src/base/base.o \\
-      src/init/init.o \\
+      src/obj/obj.o \\
       src/pie.o
 
 $NAME: \$(OBJ)
@@ -122,7 +122,7 @@ $NAME: \$(OBJ)
 
 src/base/base.o: src/base/base.h
 
-src/init/init.o: src/init/init.h
+src/obj/obj.o: src/obj/obj.h
 
 %.o: %.c
 	@ echo CC \$@
